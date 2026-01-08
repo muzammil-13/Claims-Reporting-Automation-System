@@ -1,0 +1,16 @@
+ClaimID,Status,Amount,Date,Type
+C001,Paid,550.25,2025-01-11,Medical
+C002,Denied,200.00,2025-01-14,Dental
+C003,Pending,130.50,2025-01-17,Vision
+C004,Paid,1250.75,2025-01-18,Medical
+C005,Paid,89.50,2025-01-19,Dental
+C006,Denied,450.00,2025-01-20,Medical
+C007,Pending,275.25,2025-01-21,Vision
+C008,Paid,320.00,2025-01-22,Dental
+C009,Denied,150.00,2025-01-23,Medical
+C010,Paid,675.50,2025-01-24,Vision
+C011,Pending,425.75,2025-01-25,Medical
+C012,Paid,95.25,2025-01-26,Dental
+C013,Denied,300.00,2025-01-27,Medical
+C014,Paid,180.50,2025-01-28,Vision
+C015,Pending,750.00,2025-01-29,Medical
