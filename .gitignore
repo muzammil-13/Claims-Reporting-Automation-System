@@ -1,0 +1,44 @@
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+*.log
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# SQLite / local databases
+*.db
+*.sqlite3
+
+# Reports / generated files
+*.xlsx
+*.xls
+*.pdf
+
+# VS Code / IDE
+.vscode/
+.idea/
+*.iml
+
+# Node / frontend (for later)
+node_modules/
+dist/
+build/
+
+# OS junk
+.DS_Store
+Thumbs.db
+

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.models.report import Report
-from app.services import excel_generator, storage
+from app.services import excel_generator, ml_service, storage
 
 router = APIRouter(prefix="/reports", tags=["reports"])
 
@@ -72,6 +72,63 @@ async def upload_report(
         "pdf_url": pdf_url,
         "summary": summary,
     }
+
+
+@router.post("/predict")
+async def predict_claims(file: UploadFile = File(...)):
+    """
+    Predict outcomes for pending claims using ML model.
+    
+    Accepts a CSV file with claims data and returns predictions
+    for claims with 'Pending' status.
+    """
+    # Validate file type
+    allowed_content_types = (
+        "text/csv",
+        "application/vnd.ms-excel",
+        "text/plain",
+        "application/octet-stream",
+    )
+    allowed_extensions = (".csv", ".txt")
+    
+    is_valid = False
+    if file.filename:
+        file_lower = file.filename.lower()
+        is_valid = file_lower.endswith(allowed_extensions)
+    
+    if not is_valid:
+        if file.content_type:
+            is_valid = file.content_type in allowed_content_types
+        else:
+            is_valid = False
+    
+    if not is_valid:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File must be a CSV (.csv or .txt). Received: content_type={file.content_type}, filename={file.filename}",
+        )
+    
+    # Read file content
+    csv_bytes = await file.read()
+    
+    if len(csv_bytes) == 0:
+        raise HTTPException(status_code=400, detail="File is empty")
+    
+    try:
+        # Run ML prediction
+        result = ml_service.predict_claims_from_bytes(csv_bytes)
+        return {
+            "filename": file.filename,
+            "success": True,
+            **result,
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing file: {str(e)}",
+        ) from e
 
 
 @router.get("")
